@@ -1,7 +1,10 @@
 package com.mental_health.demo.service;
 
 import com.mental_health.demo.entity.MoodEntity;
+import com.mental_health.demo.mapper.MoodMapper;
 import com.mental_health.demo.repository.MoodRepository;
+import com.mental_health.demo.request.MoodRequest;
+import com.mental_health.demo.response.MoodResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,20 +19,26 @@ public class MoodService {
         this.moodRepository = moodRepository;
     }
 
-    public void save(MoodEntity user) {
+    public MoodResponse save(MoodRequest user) {
+        MoodEntity newMood = MoodMapper.toEntity(user);
+        MoodEntity savedMood = moodRepository.save(newMood);
+        return MoodMapper.toResponse(savedMood);
 
-        moodRepository.save(user);
     }
 
 
-    public List<MoodEntity> findAll() {
+    public List<MoodResponse> findAll() {
+        List<MoodEntity> moodEntities = moodRepository.findAll();
+        return moodEntities.stream()
+                .map(MoodMapper::toResponse)
+                .toList();
 
-        return moodRepository.findAll();
     }
 
-    public Optional<MoodEntity> findById(Long id) {
+    public Optional<MoodResponse> findById(Long id) {
+        Optional<MoodEntity> moodEntity = moodRepository.findById(id);
+        return moodEntity.map(MoodMapper::toResponse);
 
-        return moodRepository.findById(id);
     }
 
     public void delete(Long id) {

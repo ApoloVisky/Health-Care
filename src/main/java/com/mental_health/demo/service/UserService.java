@@ -1,7 +1,12 @@
 package com.mental_health.demo.service;
 
+import com.mental_health.demo.entity.SuggestionEntity;
 import com.mental_health.demo.entity.UserEntity;
+import com.mental_health.demo.mapper.SuggestionMapper;
+import com.mental_health.demo.mapper.UserMapper;
 import com.mental_health.demo.repository.UserRepository;
+import com.mental_health.demo.request.UserRequest;
+import com.mental_health.demo.response.UserResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,9 +23,11 @@ public class UserService {
     }
 
 
-    public void save(UserEntity user) {
+    public UserResponse save(UserRequest user) {
 
-        userRepository.save(user);
+        UserEntity newUser = UserMapper.toEntity(user);
+         UserEntity savedUser = userRepository.save(newUser);
+         return UserMapper.toResponse(savedUser);
     }
 
     public String findByEmail(String email) {
@@ -28,14 +35,18 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-    public List<UserEntity> findAll() {
+    public List<UserResponse> findAll() {
+        List<UserEntity> userEntities = userRepository.findAll();
+        return userEntities.stream()
+                .map(UserMapper::toResponse)
+                .toList();
 
-        return userRepository.findAll();
     }
 
-    public Optional<UserEntity> findById(Long id) {
+    public Optional<UserResponse> findById(Long id) {
+        Optional<UserEntity> userEntity = userRepository.findById(id);
+        return userEntity.map(UserMapper::toResponse);
 
-        return userRepository.findById(id);
     }
 
     public void delete(Long id) {

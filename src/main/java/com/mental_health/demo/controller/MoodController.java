@@ -1,12 +1,16 @@
 package com.mental_health.demo.controller;
 
 
-import com.mental_health.demo.entity.MoodEntity;
+import com.mental_health.demo.request.MoodRequest;
+import com.mental_health.demo.response.MoodResponse;
 import com.mental_health.demo.service.MoodService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/mood")
@@ -18,26 +22,23 @@ public class MoodController {
         this.moodService = moodService;
     }
 
-    @GetMapping("/test")
-    public String test() {
-        return "Test";
-    }
 
     @PostMapping("/save")
-    public ResponseEntity<MoodEntity> save(@RequestBody @Valid MoodEntity mood) {
-        moodService.save(mood);
+    public ResponseEntity<MoodResponse> save(@RequestBody @Valid MoodRequest mood) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(mood);
+                .body(moodService.save(mood));
 
     }
 
     @GetMapping
-    public ResponseEntity<?> findAll() {
+    public ResponseEntity<List<MoodResponse>> findAll() {
+
         return ResponseEntity.ok(moodService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> findById(@PathVariable Long id) {
+    public ResponseEntity<Optional<MoodResponse>> findById(@PathVariable Long id) {
+
         return ResponseEntity.ok(moodService.findById(id));
     }
 

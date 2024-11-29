@@ -1,7 +1,10 @@
 package com.mental_health.demo.service;
 
 import com.mental_health.demo.entity.SuggestionEntity;
+import com.mental_health.demo.mapper.SuggestionMapper;
 import com.mental_health.demo.repository.SuggestionRepository;
+import com.mental_health.demo.request.SuggestionRequest;
+import com.mental_health.demo.response.SuggestionResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,20 +18,28 @@ public class SuggestionService {
         this.suggestionRepository = suggestionRepository;
     }
 
-    public void save(SuggestionEntity mood) {
+    public SuggestionResponse save(SuggestionRequest request) {
+        SuggestionEntity newSuggestion = SuggestionMapper.toEntity(request);
+        SuggestionEntity savedSuggestion = suggestionRepository.save(newSuggestion);
+        return SuggestionMapper.toResponse(savedSuggestion);
 
-        suggestionRepository.save(mood);
+
     }
 
 
-    public List<SuggestionEntity> findAll() {
+    public List<SuggestionResponse> findAll() {
+        List<SuggestionEntity> suggestionEntities = suggestionRepository.findAll();
+        return suggestionEntities.stream()
+                .map(SuggestionMapper::toResponse)
+                .toList();
 
-        return suggestionRepository.findAll();
+
     }
 
-    public Optional<SuggestionEntity> findById(Long id) {
+    public Optional<SuggestionResponse> findById(Long id) {
+        Optional<SuggestionEntity> suggestionEntity = suggestionRepository.findById(id);
+        return suggestionEntity.map(SuggestionMapper::toResponse);
 
-        return suggestionRepository.findById(id);
     }
 
     public void delete(Long id) {
