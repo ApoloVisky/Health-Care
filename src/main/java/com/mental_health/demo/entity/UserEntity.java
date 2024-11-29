@@ -4,11 +4,13 @@ package com.mental_health.demo.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@Builder
 @Table(name = "user_tb")
 @NoArgsConstructor
 @AllArgsConstructor
