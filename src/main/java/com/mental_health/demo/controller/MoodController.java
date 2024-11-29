@@ -1,20 +1,21 @@
 package com.mental_health.demo.controller;
 
-import com.mental_health.demo.entity.UserEntity;
-import com.mental_health.demo.service.UserService;
+
+import com.mental_health.demo.entity.MoodEntity;
+import com.mental_health.demo.service.MoodService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/mood")
+public class MoodController {
 
-    private final UserService userService;
+    private final MoodService moodService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public MoodController(MoodService moodService) {
+        this.moodService = moodService;
     }
 
     @GetMapping("/test")
@@ -23,26 +24,26 @@ public class UserController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<UserEntity> save(@RequestBody @Valid UserEntity user) {
-        userService.save(user);
+    public ResponseEntity<MoodEntity> save(@RequestBody @Valid MoodEntity mood) {
+        moodService.save(mood);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(user);
+                .body(mood);
 
     }
 
     @GetMapping
     public ResponseEntity<?> findAll() {
-        return ResponseEntity.ok(userService.findAll());
+        return ResponseEntity.ok(moodService.findAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.findById(id));
+        return ResponseEntity.ok(moodService.findById(id));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        userService.delete(id);
+        moodService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }
