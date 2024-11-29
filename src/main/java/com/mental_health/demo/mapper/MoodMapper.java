@@ -14,6 +14,7 @@ public class MoodMapper {
         return MoodResponse
                 .builder()
                 .id(moodEntity.getId())
+                .user(moodEntity.getUser())
                 .emotion(moodEntity.getEmotion())
                 .note(moodEntity.getNote())
                 .build();
@@ -22,6 +23,7 @@ public class MoodMapper {
     public MoodEntity toEntity(MoodRequest moodRequest) {
         return MoodEntity
                 .builder()
+                .user(moodRequest.user())
                 .emotion(moodRequest.emotion())
                 .note(moodRequest.note())
                 .build();
