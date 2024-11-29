@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 
@@ -23,6 +24,7 @@ public class MoodEntity {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
+    @CreationTimestamp
     private LocalDate date;
 
     @NotBlank
